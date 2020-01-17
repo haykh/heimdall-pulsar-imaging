@@ -17,7 +17,9 @@ This will produce an executable `main`; you may now run it with:
 ./main -i input -o tmp/output
 ```
 
-> Notice, that `-i` flag specifies the `input` file (which in fact can have any name) with the parameters, and `-o` flag specifies the output directory. The code will produce a series of `.dat` files in the specified output directory. These files contain the rows of `(a1, a2, intensity)`.
+> Notice, that `-i` flag specifies the `input` file (which in fact can have any name) with the parameters, and `-o` flag specifies the output directory. 
+
+The code will produce a series of `.dat` files in the specified output directory. These files contain the rows of `(a1, a2, intensity)`.
 
 ### Plotting
 To plot the results simply run:

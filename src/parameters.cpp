@@ -1,7 +1,7 @@
 #include <string>
 #include <math.h>
-#include "headers/io.hpp"
-#include "headers/parameters.hpp"
+#include "../headers/io.hpp"
+#include "../headers/parameters.hpp"
 
 // speed of light in cm per second
 const double constants::c = 3.0e10;
@@ -92,7 +92,6 @@ double sim::p2_vec_x, sim::p2_vec_y, sim::p2_vec_z;
 double temp::a1;
 double temp::a2;
 double temp::phi0;
-double temp::rr;
 double temp::base_vec_x;
 double temp::base_vec_y;
 double temp::base_vec_z;

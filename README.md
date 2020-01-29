@@ -5,19 +5,24 @@ For details see [Hakobyan, Beskin (2014)](https://arxiv.org/pdf/1410.4581.pdf).
 ### Compilation & running
 Use the following command to compile the code:
 ```bash
-g++ --std=c++17 main.cpp io.cpp parameters.cpp algorithm.cpp -o main
+make all
 ```
+This will create a temporary `obj/` directory and a directory with the executable `bin/heimdall`.
+
+To clear the current compilation, simply type
+```bash
+make clean
+```
+This will remove both the `obj/` and `bin/` directories.
 
 Physical parameters for the simulation as well as numerical details, image resolution etc can be specified after the compilation in the so-called `input` file.
 
-> `--std=c++17` flag is necessary!
-
-This will produce an executable `main`; you may now run it with: 
+You may now run the executable with:
 ```bash
-./main -i input -o tmp/output
+bin/heimdall -i input -o tmp/output
 ```
 
-> Notice, that `-i` flag specifies the `input` file (which in fact can have any name) with the parameters, and `-o` flag specifies the output directory. 
+> Notice, that `-i` flag specifies the `input` file (which in fact can have any name) with the parameters, and `-o` flag specifies the output directory. If the output directory `tmp/` doesn't exist, you might need to make it yourself.
 
 The code will produce a series of `.dat` files in the specified output directory. These files contain the rows of `(a1, a2, intensity)`.
 

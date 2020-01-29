@@ -1,5 +1,5 @@
 # id or name of the simulation:
-RUN_ID      test1
+RUN_ID      xmode
 
 # Surface magnetic field in units of 10^12 G:
 B12         1.0
@@ -8,22 +8,22 @@ B12         1.0
 Period      1.0
 
 # Radiation frequency in GHz:
-freqGHz     1.0
+freqGHz     0.1
 
 # Plasma multiplicity (n / nGJ):
 lambda      10000.0
 
 # Particle Lorentz-factor (for beaming):
-gamma0      50.0
+gamma0      100.0
 
 # Polar Cap gap width:
 f0          0.5
 
 # Height from the surface parameter:
-A           0.5
+A           0.1
 
 # Radius of max intensity (in stellar radii):
-Rm          10.0
+Rm          100.0
 
 # 1 = O-mode & 0 = X-mode
 mode        0
@@ -35,14 +35,14 @@ beta_deg    5.0
 # Phase limits:
 phi_min     -20.0
 phi_max     20.0
-phi_step    1.0
+phi_step    2.0
 
 # Picture plane limits:
-a1_min      -100
-a1_max      100
-a2_min      -100
-a2_max      100
-a_step      1
+a1_min      -500
+a1_max      0
+a2_min      -250
+a2_max      250
+a_step      5
 
 # Maximum height [in stellar radii]
 Rmax        1000.0

@@ -29,16 +29,47 @@ def main(argv):
     files.sort()
 
     for file in files:
+        if not ('_phi_' in file):
+            with open(directory + file, 'r') as f:
+                content = f.read()
+                content_ = content
+                content = content[content.index('picture plane') : len(content)]
+                a1_min = int(content[content.index('[') + 1 : content.index(',')])
+                content = content[content.index(',') + 1 :]
+                a1_max = int(content[:content.index(']')])
+                content = content[content.index(']') + 1:]
+                content = content[content.index('[') + 1 : content.index(']')]
+                a2_min = int(content[:content.index(',')])
+                a2_max = int(content[content.index(',') + 1:])
+                content = content_[content_.index('step='):]
+                content = content[content.index('=') + 1:]
+                da = int(content[: content.index('\n')])
+
+    a1_n = int((a1_max - a1_min) / da) + 1
+    a2_n = int((a2_max - a2_min) / da) + 1
+    Imax = 0
+    for file in files:
         if file.endswith(".dat") and '_' in file:
             ind = file.index('phi_')
             phi = float(file[ind+4:len(file)-4])
             dat = np.loadtxt(directory + file, delimiter=',')
             sz = int(np.sqrt(dat.shape[0]))
-            dat = dat.reshape(sz, sz, 3)
+            dat = dat.reshape(a1_n, a2_n, 3)
+            imax = dat[:,:,2].max()
+            Imax = np.max([Imax, imax]);
+    for file in files:
+        if file.endswith(".dat") and '_' in file:
+            ind = file.index('phi_')
+            phi = float(file[ind+4:len(file)-4])
+            dat = np.loadtxt(directory + file, delimiter=',')
+            dat = dat.reshape(a1_n, a2_n, 3)
 
             fig = plt.figure(figsize=(6, 6))
             ax = plt.subplot(111)
-            ax.imshow(dat[:,:,2], origin='lower', extent=(dat[:,:,0].min(), dat[:,:,0].max(), dat[:,:,1].min(), dat[:,:,1].max()))
+            ax.set_aspect(1)
+            ax.imshow(dat[:,:,2] / Imax,
+                      origin='lower',
+                      extent=(a2_min, a2_max, a1_min, a1_max), vmin=0, vmax=1)
             ax.set_title(r'$\phi={{{}}}^{{\circ}}$'.format(phi))
             ax.set_xlabel(r'$a_2 / R_{\rm star}$')
             ax.set_ylabel(r'$a_1 / R_{\rm star}$')

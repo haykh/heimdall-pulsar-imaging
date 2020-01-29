@@ -2,3 +2,5 @@ tmp/
 input
 .DS_Store
 main
+obj/
+bin/

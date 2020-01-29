@@ -5,9 +5,9 @@
 #include <string>
 #include <math.h>
 
-#include "headers/io.hpp"
-#include "headers/parameters.hpp"
-#include "headers/algorithm.hpp"
+#include "../headers/io.hpp"
+#include "../headers/parameters.hpp"
+#include "../headers/algorithm.hpp"
 
 #define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 #define PBWIDTH 60
@@ -37,15 +37,11 @@ int main(int argc, char* argv[]) {
     // loop through all the points on the picture surface
     for (temp::a1 = sim::a1_min; temp::a1 <= sim::a1_max; temp::a1 += sim::a_step) {
       for (temp::a2 = sim::a2_min; temp::a2 <= sim::a2_max; temp::a2 += sim::a_step) {
-        // // // length units are in stellar radii
+        // length units are in stellar radii
         // base vector where the X-mode would approach (without refraction)
         temp::base_vec_x = temp::a1 * sim::p1_vec_x + temp::a2 * sim::p2_vec_x;
         temp::base_vec_y = temp::a1 * sim::p1_vec_y + temp::a2 * sim::p2_vec_y;
         temp::base_vec_z = temp::a1 * sim::p1_vec_z + temp::a2 * sim::p2_vec_z;
-
-        // std::cout << temp::a1 << " " << temp::a2 << "\n";
-        // std::cout << sim::p1_vec_x << " " << cos(params::dzeta) << " " << sim::p2_vec_x << "\n";
-        // return 1;
 
         // initial point on the picture surface
         double r_vec_x = 4.0 * params::Rm * sim::o_vec_x + temp::base_vec_x;
@@ -60,11 +56,12 @@ int main(int argc, char* argv[]) {
         double intensity = 0.0;
         bool good_exit = false;
         for (unsigned int i = 0; i < sim::nst_max; ++i) {
-          temp::rr = sqrt(r_vec_x*r_vec_x + r_vec_y*r_vec_y + r_vec_z*r_vec_z);
+          // precompute distance for a given iteration
+          double rr = sqrt(r_vec_x*r_vec_x + r_vec_y*r_vec_y + r_vec_z*r_vec_z);
 
           // check if closest position to star (or if closer than 2 radii)
-          double dot_product = (r_vec_x * k_vec_x + r_vec_y * k_vec_y + r_vec_z * k_vec_z) / temp::rr;
-          if (dot_product <= 1e-6 || temp::rr < 2) {
+          double dot_product = (r_vec_x * k_vec_x + r_vec_y * k_vec_y + r_vec_z * k_vec_z) / rr;
+          if (dot_product <= 1e-6 || rr < 2) {
             good_exit = true;
             break;
           }
@@ -80,6 +77,7 @@ int main(int argc, char* argv[]) {
     }
     output.close();
   }
+  std::cout << "\n";
 
   return 0;
 }

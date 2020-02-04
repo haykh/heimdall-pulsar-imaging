@@ -3,6 +3,11 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import os
 import sys
+try:
+    from tqdm import tqdm
+except:
+    def tqdm(x):
+        return x
 # print "This is the name of the script: ", sys.argv[0]
 
 def main(argv):
@@ -48,7 +53,7 @@ def main(argv):
     a1_n = int((a1_max - a1_min) / da) + 1
     a2_n = int((a2_max - a2_min) / da) + 1
     Imax = 0
-    for file in files:
+    for file in tqdm(files):
         if file.endswith(".dat") and '_' in file:
             ind = file.index('phi_')
             phi = float(file[ind+4:len(file)-4])

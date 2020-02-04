@@ -1,6 +1,7 @@
 #ifndef AUX
 #define AUX
 
+void showVector(const char *msg, double x, double y, double z);
 double thetaKB(double rx, double ry, double rz, double kx, double ky, double kz);
 double gFunc(double rx, double ry, double rz);
 

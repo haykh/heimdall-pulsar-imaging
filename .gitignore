@@ -2,5 +2,7 @@ tmp/
 input
 .DS_Store
 main
-obj/
+obj*/
 bin/
+Makefile_old
+main_old.cpp

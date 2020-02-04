@@ -18,7 +18,6 @@ dirs:
 	mkdir -p $(BINDIR) $(OBJDIR)
 
 $(BINDIR)/$(TARGET): $(OBJECTS)
-	echo $(OBJECTS)
 	$(CPP) $(OBJECTS) $(CPPFLAGS) -o $@
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp

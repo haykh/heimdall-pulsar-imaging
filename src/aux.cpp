@@ -1,7 +1,14 @@
 #include <math.h>
+#include <iostream>
 #include <string>
 #include "../headers/parameters.hpp"
 #include "../headers/aux.hpp"
+
+void showVector(const char *msg, double x, double y, double z) {
+  std::cout << msg << "x: " << x << " | "
+            << msg << "y: " << y << " | "
+            << msg << "z: " << z << "\n";
+}
 
 Vector3D mu_vec(double rx, double ry, double rz) {
   double phi0 = temp::phi0 * M_PI / 180.0;
@@ -32,7 +39,7 @@ Vector3D B_vec(double rx, double ry, double rz) {
 double thetaKB(double rx, double ry, double rz, double kx, double ky, double kz) {
   Vector3D bvec = B_vec(rx, ry, rz);
   double k_dot_b = kx * bvec.x + ky * bvec.y + kz * bvec.z;
-  return acos(-k_dot_b / bvec.norm());
+  return acos(k_dot_b / bvec.norm());
 }
 
 double sinPsiM(double rx, double ry, double rz) {
@@ -44,8 +51,8 @@ double sinPsiM(double rx, double ry, double rz) {
 
 double gFunc(double rx, double ry, double rz) {
   double rr = sqrt(rx * rx + ry * ry + rz * rz);
-  double rperp_over_R0 = sinPsiM(rx, ry, rz) / sqrt(rr / params::RLC);
-  return exp(-pow(rperp_over_R0, 2)) / (1.0 + pow(params::f0 / rperp_over_R0, 2));
+  double rperp_over_R0 = sinPsiM(rx, ry, rz) * sqrt(params::RLC / rr);
+  return exp(-pow(rperp_over_R0, 2)) / (1.0 + pow(params::f0 / rperp_over_R0, 5));
 }
 
 /* ------------------------------------------------------------------------------ */
@@ -102,7 +109,6 @@ double d_nrefInv_d_ki(double rx, double ry, double rz, double kx, double ky, dou
 }
 
 double RHS_ri(double rx, double ry, double rz, double kx, double ky, double kz, int i) {
-  double kk = sqrt(kx * kx + ky * ky + kz * kz);
   double ki;
   if (i == 0) {
     ki = kx;
@@ -111,7 +117,12 @@ double RHS_ri(double rx, double ry, double rz, double kx, double ky, double kz, 
   } else {
     ki = kz;
   }
-  return nRefInv(rx, ry, rz, kx, ky, kz) * ki / kk + kk * d_nrefInv_d_ki(rx, ry, rz, kx, ky, kz, i);
+  if (params::mode == 0)
+    return ki;
+  else {
+    double kk = sqrt(kx * kx + ky * ky + kz * kz);
+    return nRefInv(rx, ry, rz, kx, ky, kz) * ki / kk + kk * d_nrefInv_d_ki(rx, ry, rz, kx, ky, kz, i);
+  }
 }
 
 double RHS_ki(double rx, double ry, double rz, double kx, double ky, double kz, int i) {

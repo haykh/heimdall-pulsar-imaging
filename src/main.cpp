@@ -44,9 +44,9 @@ int main(int argc, char* argv[]) {
         temp::base_vec_z = temp::a1 * sim::p1_vec_z + temp::a2 * sim::p2_vec_z;
 
         // initial point on the picture surface
-        double r_vec_x = 4.0 * params::Rm * sim::o_vec_x + temp::base_vec_x;
-        double r_vec_y = 4.0 * params::Rm * sim::o_vec_y + temp::base_vec_y;
-        double r_vec_z = 4.0 * params::Rm * sim::o_vec_z + temp::base_vec_z;
+        double r_vec_x = sim::Rmax * sim::o_vec_x + temp::base_vec_x;
+        double r_vec_y = sim::Rmax * sim::o_vec_y + temp::base_vec_y;
+        double r_vec_z = sim::Rmax * sim::o_vec_z + temp::base_vec_z;
 
         // initial photon momentum direction [unitless]
         double k_vec_x = sim::o_vec_x;
@@ -61,16 +61,17 @@ int main(int argc, char* argv[]) {
 
           // check if closest position to star (or if closer than 2 radii)
           double dot_product = (r_vec_x * k_vec_x + r_vec_y * k_vec_y + r_vec_z * k_vec_z) / rr;
-          if (dot_product <= 1e-6 || rr < 2) {
+          if (abs(dot_product) <= 1e-6 || rr < 1.2) {
             good_exit = true;
             break;
           }
           integrateRvec(r_vec_x, r_vec_y, r_vec_z, k_vec_x, k_vec_y, k_vec_z);
-          integrateKvec(r_vec_x, r_vec_y, r_vec_z, k_vec_x, k_vec_y, k_vec_z);
+          if (params::mode == 1)
+            integrateKvec(r_vec_x, r_vec_y, r_vec_z, k_vec_x, k_vec_y, k_vec_z);
           intensity += computeIntensity(r_vec_x, r_vec_y, r_vec_z, k_vec_x, k_vec_y, k_vec_z);
         }
         if (!good_exit) {
-          std::cout << "Number of steps too small, closest point not reached.\n Consider increasing `nst_max` or stepsize `dr_step`.\n";
+          std::cout << "Number of steps too small, closest point not reached.\n Consider increasing `nst_max` or decreasing stepsize `dr_step`.\n";
         }
         output << temp::a1 << "," << temp::a2 << "," << intensity << "\n";
       }

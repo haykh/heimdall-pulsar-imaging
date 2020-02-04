@@ -30,7 +30,7 @@ mode        0
 
 # Geometry:
 alpha_deg   45.0
-beta_deg    5.0
+beta_deg    -5.0
 
 # Phase limits:
 phi_min     -20.0
@@ -38,11 +38,11 @@ phi_max     20.0
 phi_step    2.0
 
 # Picture plane limits:
-a1_min      -500
-a1_max      0
-a2_min      -250
-a2_max      250
-a_step      5
+a1_min      -50
+a1_max      50
+a2_min      -50
+a2_max      50
+a_step      1
 
 # Maximum height [in stellar radii]
 Rmax        1000.0
